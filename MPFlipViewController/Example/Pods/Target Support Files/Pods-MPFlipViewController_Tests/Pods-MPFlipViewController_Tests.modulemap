@@ -1,0 +1,6 @@
+framework module Pods_MPFlipViewController_Tests {
+  umbrella header "Pods-MPFlipViewController_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

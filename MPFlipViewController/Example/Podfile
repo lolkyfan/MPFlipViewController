@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MPFlipViewController_Example' do
+  pod 'MPFlipViewController', :path => '../'
+
+  target 'MPFlipViewController_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
