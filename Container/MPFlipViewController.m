@@ -147,15 +147,11 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 	right.delegate = self;
 	[self.view addGestureRecognizer:right];
 	
-	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-	tap.delegate = self;
-	[self.view addGestureRecognizer:tap];
-	
 	UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	pan.delegate = self;
 	[self.view addGestureRecognizer:pan];
 	
-	self.gestureRecognizers = [NSArray arrayWithObjects:left, right, tap, pan, nil];
+	self.gestureRecognizers = [NSArray arrayWithObjects:left, right, pan, nil];
 
 	[self setGesturesAdded:YES];
 }
@@ -194,23 +190,6 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 }
 
 #pragma mark - Gesture handlers
-
-- (void)handleTap:(UITapGestureRecognizer *)gestureRecognizer
-{
-	if ([self isAnimating])
-		return;
-	
-	CGPoint tapPoint = [gestureRecognizer locationInView:self.view];
-	BOOL isHorizontal = [self orientation] == MPFlipViewControllerOrientationHorizontal;
-	CGFloat value = isHorizontal? tapPoint.x : tapPoint.y;
-	CGFloat dimension = isHorizontal? self.view.bounds.size.width : self.view.bounds.size.height;
-    CGFloat margin = isHorizontal ? self.view.bounds.size.width/2.0 : self.view.bounds.size.height/2.0;
-
-	if (value <= margin)
-		[self gotoPreviousPage];
-	else if (value >= dimension - margin)
-		[self gotoNextPage];
-}
 
 - (void)handleSwipePrev:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -338,7 +317,7 @@ NSString *MPFlipViewControllerDidFinishAnimatingNotification = @"com.markpospese
 	if ([self isAnimating])
 		return NO;
 	
-	if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]] || [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
+	if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
 	{
 		// for taps and pans, only handle if started within margin, otherwise don't receive so that the content may handle it
 		CGPoint tapPoint = [touch locationInView:self.view];
